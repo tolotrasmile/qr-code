@@ -7,27 +7,11 @@
  */
 
 use App\Query;
-use Endroid\QrCode\ErrorCorrectionLevel;
 
 require 'vendor/autoload.php';
 
 $user = \serialize(Query::fetchOne('SELECT * FROM users LIMIT 1'));
-
-// Create a basic QR code
-$qrCode = new Endroid\QrCode\QrCode($user);
-$qrCode
-    ->setSize(300)
-    ->setWriterByName('png')
-    ->setMargin(10)
-    ->setEncoding('UTF-8')
-    ->setErrorCorrectionLevel(ErrorCorrectionLevel::LOW)
-    ->setValidateResult(false);
-
-// Directly output the QR code
-//header('Content-Type: ' . $qrCode->getContentType());
-//echo $qrCode->writeString();
-
-$qrCode->writeFile('tmp/Endroid.png');
+\App\Generator\CodeGenerator::generate($user);
 
 PHPQRCode\QRcode::png($user, "tmp/PHPQRCode.png", \PHPQRCode\Constants::QR_ECLEVEL_L, 20, 2);
 
@@ -67,8 +51,16 @@ PHPQRCode\QRcode::png($user, "tmp/PHPQRCode.png", \PHPQRCode\Constants::QR_ECLEV
     <div class="container">
         <h1 class="jumbotron-heading">QR Code example</h1>
         <p class="lead text-muted">Serialized : <?php echo $user ?></p>
-        <img src="tmp/PHPQRCode.png" alt="TEXT" style="width: 200px; height: 200px; margin-bottom: 20px;">
-        <img src="tmp/Endroid.png" alt="TEXT" style="width: 200px; height: 200px; margin-bottom: 20px;">
+
+        <div>
+            <img src="tmp/PHPQRCode.png" alt="TEXT" style="width: 200px; height: 200px; margin-bottom: 20px;">
+            <p>PHPQRCode</p>
+        </div>
+
+        <div>
+            <img src="tmp/Endroid.png" alt="TEXT" style="width: 200px; height: 200px; margin-bottom: 20px;">
+            <p>Endroid</p>
+        </div>
         <p>
             <a href="#" class="btn btn-secondary">Reload</a>
         </p>

@@ -16,12 +16,18 @@ class Database
 
     static $instance;
 
+    /**
+     * Database constructor.
+     */
     private function __construct()
     {
         $this->pdo = new \PDO('mysql:host=localhost:3306;dbname=qr_prime', 'root', '', array(\PDO::ATTR_ERRMODE => \PDO::ERRMODE_WARNING));
     }
 
-    public static function getInstance()
+    /**
+     * @return Database
+     */
+    public static function getInstance(): Database
     {
         if (static::$instance) {
             return static::$instance;
@@ -30,7 +36,10 @@ class Database
         return new self();
     }
 
-    public function getPdo()
+    /**
+     * @return \PDO
+     */
+    public function getPdo(): \PDO
     {
         return $this->pdo;
     }

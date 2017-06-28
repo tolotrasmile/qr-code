@@ -11,17 +11,32 @@ namespace App;
 
 class Query
 {
-    public static function fetchAll($query, $mode = \PDO::FETCH_OBJ)
+    /**
+     * @param string $query
+     * @param int $mode
+     * @return array
+     */
+    public static function fetchAll(string $query, $mode = \PDO::FETCH_OBJ): array
     {
         return Database::getInstance()->getPdo()->query($query)->fetchAll($mode);
     }
 
-    public static function fetchOne($query, $mode = \PDO::FETCH_OBJ)
+    /**
+     * @param string $query
+     * @param int $mode
+     * @return mixed
+     */
+    public static function fetchOne(string $query, $mode = \PDO::FETCH_OBJ)
     {
         return Database::getInstance()->getPdo()->query($query)->fetch($mode);
     }
 
-    public static function select($query, $mode = \PDO::FETCH_OBJ)
+    /**
+     * @param string $query
+     * @param int $mode
+     * @return array
+     */
+    public static function select(string $query, $mode = \PDO::FETCH_OBJ)
     {
         return Database::getInstance()->getPdo()->query($query)->fetchAll($mode);
     }
