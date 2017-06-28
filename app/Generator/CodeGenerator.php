@@ -14,10 +14,11 @@ use Endroid\QrCode\QrCode;
 
 class CodeGenerator
 {
+    /**
+     * @param string $value
+     */
     public static function generate(string $value)
     {
-
-        //$user = \serialize(Query::fetchOne('SELECT * FROM users LIMIT 1'));
 
         // Create a basic QR code
         $qrCode = new QrCode($value);

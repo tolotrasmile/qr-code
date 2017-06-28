@@ -36,7 +36,7 @@ class Query
      * @param int $mode
      * @return array
      */
-    public static function select(string $query, $mode = \PDO::FETCH_OBJ)
+    public static function select(string $query, $mode = \PDO::FETCH_OBJ): array
     {
         return Database::getInstance()->getPdo()->query($query)->fetchAll($mode);
     }

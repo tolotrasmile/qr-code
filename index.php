@@ -52,14 +52,16 @@ PHPQRCode\QRcode::png($user, "tmp/PHPQRCode.png", \PHPQRCode\Constants::QR_ECLEV
         <h1 class="jumbotron-heading">QR Code example</h1>
         <p class="lead text-muted">Serialized : <?php echo $user ?></p>
 
-        <div>
-            <img src="tmp/PHPQRCode.png" alt="TEXT" style="width: 200px; height: 200px; margin-bottom: 20px;">
-            <p>PHPQRCode</p>
-        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <img src="tmp/PHPQRCode.png" alt="TEXT" style="width: 200px; height: 200px; margin-bottom: 20px;">
+                <p>PHPQRCode</p>
+            </div>
 
-        <div>
-            <img src="tmp/Endroid.png" alt="TEXT" style="width: 200px; height: 200px; margin-bottom: 20px;">
-            <p>Endroid</p>
+            <div class="col-md-6">
+                <img src="tmp/Endroid.png" alt="TEXT" style="width: 200px; height: 200px; margin-bottom: 20px;">
+                <p>Endroid</p>
+            </div>
         </div>
         <p>
             <a href="#" class="btn btn-secondary">Reload</a>
