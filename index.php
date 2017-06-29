@@ -10,16 +10,17 @@ use App\Query;
 
 require 'vendor/autoload.php';
 
-$user = \serialize(Query::fetchOne('SELECT * FROM users LIMIT 1'));
-\App\Generator\CodeGenerator::generate($user);
+$user = Query::fetchOne('SELECT * FROM users LIMIT 1');
 
-PHPQRCode\QRcode::png($user, "tmp/PHPQRCode.png", \PHPQRCode\Constants::QR_ECLEVEL_L, 20, 2);
+$json = json_encode($user);
+
+\App\Generator\CodeGenerator::generate($json);
+
+PHPQRCode\QRcode::png($json, "tmp/PHPQRCode.png", \PHPQRCode\Constants::QR_ECLEVEL_L, 20, 2);
 
 ?>
 
-
 <!DOCTYPE html>
-
 
 <html lang="en">
 <head>
@@ -50,7 +51,7 @@ PHPQRCode\QRcode::png($user, "tmp/PHPQRCode.png", \PHPQRCode\Constants::QR_ECLEV
 <section class="jumbotron text-center" style="margin-top: 55px;">
     <div class="container">
         <h1 class="jumbotron-heading">QR Code example</h1>
-        <p class="lead text-muted">Serialized : <?php echo $user ?></p>
+        <p class="lead text-muted">Serialized : <?php echo $json ?></p>
 
         <div class="row">
             <div class="col-md-6">
@@ -68,6 +69,34 @@ PHPQRCode\QRcode::png($user, "tmp/PHPQRCode.png", \PHPQRCode\Constants::QR_ECLEV
         </p>
     </div>
 </section>
+<div class="container">
+    <table class="table">
+        <thead class="thead-inverse">
+        <tr>
+            <th>#</th>
+            <th>email</th>
+            <th>Username</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th scope="row"><?= $user->id ?></th>
+            <td><?= $user->username ?></td>
+            <td><?= $user->password ?></td>
+        </tr>
+        <tr>
+            <th scope="row"><?= $user->id ?></th>
+            <td><?= $user->username ?></td>
+            <td><?= $user->password ?></td>
+        </tr>
+        <tr>
+            <th scope="row"><?= $user->id ?></th>
+            <td><?= $user->username ?></td>
+            <td><?= $user->password ?></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 
 <script src="vendor/components/jquery/jquery.min.js"></script>
 <script src="public/assets/js/tether.min.js"></script>
