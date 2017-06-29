@@ -9,6 +9,7 @@
 
 namespace App\Generator;
 
+use App\Encryption\RSA;
 use Endroid\QrCode\ErrorCorrectionLevel;
 use Endroid\QrCode\QrCode;
 
@@ -16,11 +17,17 @@ class CodeGenerator
 {
     /**
      * @param string $value
+     * @param bool $encrypt
      */
-    public static function generate(string $value)
+    public static function generate($value, $encrypt = false)
     {
 
         // Create a basic QR code
+
+        if ($encrypt) {
+            $value = RSA::encrypt($value);
+        }
+
         $qrCode = new QrCode($value);
         $qrCode
             ->setSize(300)

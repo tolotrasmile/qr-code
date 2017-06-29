@@ -27,7 +27,7 @@ class Database
     /**
      * @return Database
      */
-    public static function getInstance(): Database
+    public static function getInstance()
     {
         if (static::$instance) {
             return static::$instance;
@@ -39,7 +39,7 @@ class Database
     /**
      * @return \PDO
      */
-    public function getPdo(): \PDO
+    public function getPdo()
     {
         return $this->pdo;
     }
