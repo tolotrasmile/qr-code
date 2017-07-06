@@ -22,44 +22,44 @@ class RSA
 
     private static function power($x, $n)
     {
-        $resPuis = 1;
+        $result = 1;
 
-        if ($x == 0) {
+        if (0 == $x) {
             return 0;
         }
 
-        if ($n == 0) {
+        if (0 == $n) {
             return 1;
         }
 
         for ($i = 0; $i < $n; $i++) {
-            $resPuis = $resPuis * $x;
+            $result = $result * $x;
         }
 
-        return $resPuis;
+        return $result;
     }
 
     public static function encrypt($text)
     {
-        $text_crypte = '';
+        $encrypted = '';
 
         for ($i = 0; $i < strlen($text); $i++) {
-            $text_crypte = $i == strlen($text) - 1 ? $text_crypte . self::calculate((ord($text[$i])) - 65, 71) : $text_crypte . self::calculate((ord($text[$i])) - 65, 71) . " ";
+            $encrypted = $i == strlen($text) - 1 ? $encrypted . self::calculate((ord($text[$i])) - 65, 71) : $encrypted . self::calculate((ord($text[$i])) - 65, 71) . " ";
         }
 
-        return $text_crypte;
+        return $encrypted;
     }
 
     public static function decrypt($text)
     {
-        $text_clair = '';
+        $plain = '';
 
         $txt = \explode(" ", $text);
 
         for ($i = 0; $i < count($txt); $i++) {
-            $text_clair .= chr(65 + (self::calculate($txt[$i], 1079)));
+            $plain .= chr(65 + (self::calculate($txt[$i], 1079)));
         }
 
-        return $text_clair;
+        return $plain;
     }
 }

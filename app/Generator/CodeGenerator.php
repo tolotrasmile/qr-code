@@ -24,7 +24,7 @@ class CodeGenerator
 
         // Create a basic QR code
 
-        if ($encrypt) {
+        if (true == $encrypt) {
             $value = RSA::encrypt($value);
         }
 

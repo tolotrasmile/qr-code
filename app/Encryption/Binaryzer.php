@@ -15,38 +15,38 @@ class Binaryzer
     public function toBin()
     {
         $result = '';
-        $tab_size = 0;
+        $size = 0;
         $res = [];
 
         if ($this->E == 1) {
-            $res[$tab_size] = 1;
-            $tab_size++;
+            $res[$size] = 1;
+            $size++;
         } else if ($this->E == 0) {
-            $res[$tab_size] = 0;
-            $tab_size++;
+            $res[$size++] = 0;
+            $size++;
         } else {
             while (($q = (int)($this->E / 2)) != 0) {
                 if ($q != 1) {
                     $r = $this->E % 2;
                     if ($r == 1) {
-                        $res[$tab_size] = 1;
-                        $tab_size++;
+                        $res[$size] = 1;
+                        $size++;
                     } else {
-                        $res[$tab_size] = 0;
-                        $tab_size++;
+                        $res[$size] = 0;
+                        $size++;
                     }
                     $this->E = $q;
                 } else {
                     $r = $this->E % 2;
                     if ($r == 1) {
-                        $res[$tab_size] = 1;
-                        $tab_size++;
+                        $res[$size] = 1;
+                        $size++;
                     } else {
-                        $res[$tab_size] = 0;
-                        $tab_size++;
+                        $res[$size] = 0;
+                        $size++;
                     }
-                    $res[$tab_size] = 1;
-                    $tab_size++;
+                    $res[$size] = 1;
+                    $size++;
                     break;
                 }
             }

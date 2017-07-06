@@ -14,7 +14,7 @@ class Database
 {
     private $pdo;
 
-    static $instance;
+    private static $instance;
 
     /**
      * Database constructor.
@@ -29,7 +29,7 @@ class Database
      */
     public static function getInstance()
     {
-        if (static::$instance) {
+        if (self::$instance) {
             return static::$instance;
         }
 
