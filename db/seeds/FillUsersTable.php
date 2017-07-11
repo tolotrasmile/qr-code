@@ -26,6 +26,7 @@ class FillUsersTable extends AbstractSeed
             $users[] = [
                 'username' => $faker->userName,
                 'password' => $faker->password(40),
+                'accreditation' => rand(1, 3),
                 'created_at' => date('Y-m-d H:i:s', $timestamp),
                 'updated_at' => date('Y-m-d H:i:s', $timestamp)
             ];

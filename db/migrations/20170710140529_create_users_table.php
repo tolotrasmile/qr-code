@@ -30,6 +30,8 @@ class CreateUsersTable extends AbstractMigration
         $this->table('users')
             ->addColumn('username', 'string')
             ->addColumn('password', 'string')
+            ->addColumn('accreditation', 'string')
+            ->addColumn('slug', 'string')
             ->addColumn('created_at', 'datetime')
             ->addColumn('updated_at', 'datetime')
             ->create();
