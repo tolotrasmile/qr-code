@@ -1,0 +1,22 @@
+{
+  "name": "qr-code",
+  "version": "1.0.0",
+  "description": "Install the composer dependencies",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tolotrasmile/qr-code.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tolotrasmile/qr-code/issues"
+  },
+  "homepage": "https://github.com/tolotrasmile/qr-code#readme",
+  "dependencies": {
+    "primer-css": "^9.0.0"
+  }
+}

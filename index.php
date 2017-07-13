@@ -10,13 +10,13 @@ use App\Query;
 
 require 'vendor/autoload.php';
 
-$user = Query::fetchOne('SELECT * FROM users LIMIT 1');
+$documents = Query::fetchAll('SELECT * FROM documents ORDER BY documents.created_at DESC');
 
-$json = json_encode($user);
+//$json = json_encode($user);
 
-\App\Generator\CodeGenerator::generate($json);
+//\App\Generator\CodeGenerator::generate($json);
 
-PHPQRCode\QRcode::png($json, "tmp/PHPQRCode.png", \PHPQRCode\Constants::QR_ECLEVEL_L, 20, 2);
+//PHPQRCode\QRcode::png($json, "tmp/PHPQRCode.png", \PHPQRCode\Constants::QR_ECLEVEL_L, 20, 2);
 
 ?>
 
@@ -48,10 +48,10 @@ PHPQRCode\QRcode::png($json, "tmp/PHPQRCode.png", \PHPQRCode\Constants::QR_ECLEV
     </div>
 </nav>
 
-<section class="jumbotron text-center" style="margin-top: 55px;">
+<!--<section class="jumbotron text-center" style="margin-top: 55px;">
     <div class="container">
         <h1 class="jumbotron-heading">QR Code example</h1>
-        <p class="lead text-muted">Serialized : <?php echo $json ?></p>
+        <p class="lead text-muted">Serialized : <?php /*echo $json */ ?></p>
 
         <div class="row">
             <div class="col-md-6">
@@ -68,32 +68,26 @@ PHPQRCode\QRcode::png($json, "tmp/PHPQRCode.png", \PHPQRCode\Constants::QR_ECLEV
             <a href="#" class="btn btn-secondary">Reload</a>
         </p>
     </div>
-</section>
-<div class="container">
+</section>-->
+<div class="container" style="margin-top: 55px;">
     <table class="table">
         <thead class="thead-inverse">
         <tr>
-            <th>#</th>
-            <th>email</th>
-            <th>Username</th>
+            <th>NUM</th>
+            <th>NOM</th>
+            <th>TYPE</th>
+            <th>DATE</th>
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <th scope="row"><?= $user->id ?></th>
-            <td><?= $user->username ?></td>
-            <td><?= $user->password ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= $user->id ?></th>
-            <td><?= $user->username ?></td>
-            <td><?= $user->password ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= $user->id ?></th>
-            <td><?= $user->username ?></td>
-            <td><?= $user->password ?></td>
-        </tr>
+        <?php foreach ($documents as $document) : ?>
+            <tr>
+                <th scope="row"><?= $document->number ?></th>
+                <td><?= $document->name ?></td>
+                <td><?= $document->type ?></td>
+                <td><?= $document->created_at ?></td>
+            </tr>
+        <?php endforeach; ?>
         </tbody>
     </table>
 </div>
