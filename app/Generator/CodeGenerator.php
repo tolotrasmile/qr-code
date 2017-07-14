@@ -41,7 +41,7 @@ class CodeGenerator
         //header('Content-Type: ' . $qrCode->getContentType());
         //echo $qrCode->writeString();
 
-        $qrCode->writeFile('tmp/Endroid.png');
+        $qrCode->writeFile('public/img/code.png');
     }
 
 }

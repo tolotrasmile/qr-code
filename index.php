@@ -10,13 +10,29 @@ use App\Query;
 
 require 'vendor/autoload.php';
 
+if (session_status() != PHP_SESSION_ACTIVE) {
+    session_start();
+}
+
 $documents = Query::fetchAll('SELECT * FROM documents ORDER BY documents.created_at DESC');
 
-//$json = json_encode($user);
+/** get curent document */
+if (isset($_GET['id'])) {
 
-//\App\Generator\CodeGenerator::generate($json);
+    $md5Id = $_GET['id'];
+    $currentDocument = Query::fetchOne("SELECT * FROM documents WHERE MD5(id)='$md5Id'");
 
-//PHPQRCode\QRcode::png($json, "tmp/PHPQRCode.png", \PHPQRCode\Constants::QR_ECLEVEL_L, 20, 2);
+    if ($currentDocument) {
+        \App\Generator\CodeGenerator::generate(json_encode($currentDocument));
+    }
+
+}
+
+if (isset($_POST['username']) && isset($_POST['password'])) {
+    \App\Controller\LoginController::__doLogin($_POST['username'], $_POST['password']);
+}
+
+//PHPQRCode\QRcode::png($json, "tmp/code.png", \PHPQRCode\Constants::QR_ECLEVEL_L, 20, 2);
 
 ?>
 
@@ -28,69 +44,21 @@ $documents = Query::fetchAll('SELECT * FROM documents ORDER BY documents.created
     <title>QR Code</title>
     <link rel="stylesheet" href="vendor/twbs/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="public/assets/css/tether.min.css">
+    <link rel="stylesheet" href="public/assets/css/signin.css">
 </head>
 <body>
 
-<nav class="navbar navbar-toggleable-md fixed-top navbar-inverse bg-inverse">
-    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
-            data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false"
-            aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <a class="navbar-brand" href="#">QR Code</a>
+<?php
 
-    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="#"><span class="sr-only">(current)</span></a>
-            </li>
-        </ul>
-    </div>
-</nav>
+$headers = \apache_response_headers();
 
-<!--<section class="jumbotron text-center" style="margin-top: 55px;">
-    <div class="container">
-        <h1 class="jumbotron-heading">QR Code example</h1>
-        <p class="lead text-muted">Serialized : <?php /*echo $json */ ?></p>
+if (isset($_SESSION['login'])) {
+    include 'public/pages/liste.php';
+} else {
+    include 'public/pages/login.php';
+}
 
-        <div class="row">
-            <div class="col-md-6">
-                <img src="tmp/PHPQRCode.png" alt="TEXT" style="width: 200px; height: 200px; margin-bottom: 20px;">
-                <p>PHPQRCode</p>
-            </div>
-
-            <div class="col-md-6">
-                <img src="tmp/Endroid.png" alt="TEXT" style="width: 200px; height: 200px; margin-bottom: 20px;">
-                <p>Endroid</p>
-            </div>
-        </div>
-        <p>
-            <a href="#" class="btn btn-secondary">Reload</a>
-        </p>
-    </div>
-</section>-->
-<div class="container" style="margin-top: 55px;">
-    <table class="table">
-        <thead class="thead-inverse">
-        <tr>
-            <th>NUM</th>
-            <th>NOM</th>
-            <th>TYPE</th>
-            <th>DATE</th>
-        </tr>
-        </thead>
-        <tbody>
-        <?php foreach ($documents as $document) : ?>
-            <tr>
-                <th scope="row"><?= $document->number ?></th>
-                <td><?= $document->name ?></td>
-                <td><?= $document->type ?></td>
-                <td><?= $document->created_at ?></td>
-            </tr>
-        <?php endforeach; ?>
-        </tbody>
-    </table>
-</div>
+?>
 
 <script src="vendor/components/jquery/jquery.min.js"></script>
 <script src="public/assets/js/tether.min.js"></script>
