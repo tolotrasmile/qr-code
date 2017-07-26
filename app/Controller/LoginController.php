@@ -17,13 +17,19 @@ class LoginController
     {
         $user = Query::fetchOne("SELECT * FROM users WHERE username='$login' AND password='$password'");
 
-        if ($user && isset($user) && session_status() == PHP_SESSION_ACTIVE) {
+        if ($user && isset($user)) {
 
-            $token = uniqid(rand(), true);
+            if (session_status() == PHP_SESSION_ACTIVE) {
+                $token = uniqid(rand(), true);
+                header("Authorization: " . $token);
+                $_SESSION['token'] = $token;
+                $_SESSION['login'] = $user;
+            }
 
-            header("Authorization: " . $token);
-            $_SESSION['token'] = $token;
-            $_SESSION['login'] = $user;
+
+            return $user;
         }
+
+        return null;
     }
 }

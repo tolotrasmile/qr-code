@@ -26,7 +26,7 @@ class FillDocumentsTable extends AbstractSeed
 
             $documents[] = [
                 'number' => rand(1, 1000),
-                'name' => $faker->sentence(20),
+                'name' => $faker->name,
                 'type' => rand(1, 3),
                 'link' => $faker->slug(3),
                 'created_at' => date('Y-m-d H:i:s', $timestamp),

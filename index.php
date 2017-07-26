@@ -6,26 +6,10 @@
  * Time: 10:39
  */
 
-use App\Query;
-
 require 'vendor/autoload.php';
 
 if (session_status() != PHP_SESSION_ACTIVE) {
     session_start();
-}
-
-$documents = Query::fetchAll('SELECT * FROM documents ORDER BY documents.created_at DESC');
-
-/** get curent document */
-if (isset($_GET['id'])) {
-
-    $md5Id = $_GET['id'];
-    $currentDocument = Query::fetchOne("SELECT * FROM documents WHERE MD5(id)='$md5Id'");
-
-    if ($currentDocument) {
-        \App\Generator\CodeGenerator::generate(json_encode($currentDocument));
-    }
-
 }
 
 if (isset($_POST['username']) && isset($_POST['password'])) {
@@ -48,6 +32,8 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
 </head>
 <body>
 
+<script src="vendor/components/jquery/jquery.min.js"></script>
+
 <?php
 
 $headers = \apache_response_headers();
@@ -57,10 +43,8 @@ if (isset($_SESSION['login'])) {
 } else {
     include 'public/pages/login.php';
 }
-
 ?>
 
-<script src="vendor/components/jquery/jquery.min.js"></script>
 <script src="public/assets/js/tether.min.js"></script>
 <script src="vendor/twbs/bootstrap/dist/js/bootstrap.min.js"></script>
 
