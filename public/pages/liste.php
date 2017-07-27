@@ -108,16 +108,17 @@ if (isset($_GET['id'])) {
             </div>
 
             <div class="scrollable">
-                <?php if (isset($currentDocument)): ?>
+                <?php if (isset($currentDocument) && $currentDocument instanceof stdClass): ?>
                     <div>
                         <h4>QR CODE</h4>
                         <img src="/public/img/code.png" alt="CODE QR" width="70%">
                         <p><?php echo $currentDocument->name ?></p>
                     </div>
                     <div class="btn-group" style="width: 100%;">
-                        <a href="#" class="btn btn-primary" style="width: 50%" data-toggle="modal"
-                           data-target="#myModal">Modifier</a><br>
-                        <a href="#" class="btn btn-danger" style="width: 50%">Supprimer</a>
+                        <a href="#" class="btn btn-primary" style="width: 35%" data-toggle="modal"
+                           data-target="#documentDetailModal">Modifier</a><br>
+                        <a id="deleteDocument" data-id="<?= $currentDocument->id ?>" href="#" class="btn btn-danger"
+                           style="width: 35%">Supprimer</a>
                     </div>
                 <?php endif; ?>
             </div>
@@ -135,50 +136,77 @@ if (isset($_GET['id'])) {
     </div><!-- row bottom -->
 
 </div><!-- container-fluid -->
-
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">New message</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="form-group">
-                        <label for="recipient-name" class="form-control-label">Recipient:</label>
-                        <input type="text" class="form-control" id="recipient-name">
-                    </div>
-                    <div class="form-group">
-                        <label for="message-text" class="form-control-label">Message:</label>
-                        <textarea class="form-control" id="message-text"></textarea>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Send message</button>
+<?php if (isset($currentDocument) && $currentDocument instanceof stdClass): ?>
+    <div class="modal fade" id="documentDetailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Modifier</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="form-modal" class="form-group">
+                        <label for="recipient-name" class="form-control-label">NOM:</label>
+                        <input type="text" class="form-control" name="name" value="<?php echo $currentDocument->name ?>">
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                    <button type="button" id="save-document" class="btn btn-primary">Enregister</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+<?php endif; ?>
 
 <script>
-  $('#myModal').on('show.bs.modal', function (event) {
-    var button = $(event.relatedTarget) // Button that triggered the modal
-    var recipient = button.data('whatever') // Extract info from data-* attributes
-    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-    var modal = $(this)
-    modal.find('.modal-title').text('New message to ' + recipient)
-    modal.find('.modal-body input').val(recipient)
-  })
 
-  $.post("public/api/index.php",{ action: 'deleteDocument', id: 1 }, function (data) {
-    console.log(data)
+  $('#deleteDocument').click(function (e) {
+
+    e.preventDefault();
+
+    if (confirm("Voulez-vous supprimer le document?")) {
+
+      var id = getParameterByName('id');
+
+      $.post("public/api/index.php", {action: 'deleteDocument', id: id})
+        .done(function (data) {
+          location.reload();
+        })
+        .fail(function () {
+          alert("Erreur lors de la suppression");
+        })
+    }
   });
+
+  $('#save-document').click(function (e) {
+    e.preventDefault();
+
+    console.log($('#form-modal').serialize());
+    $('#documentDetailModal').modal('hide');
+
+    window.setTimeout(function () {
+      location.reload();
+    }, 1000);
+
+  });
+
+  function getParameterByName(name) {
+
+    var url = window.location.href;
+
+    name = name.replace(/[\[\]]/g, "\\$&");
+
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"), results = regex.exec(url);
+
+    if (!results) return null;
+    if (!results[2]) return '';
+
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+  }
+
 
 </script>

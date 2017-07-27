@@ -26,10 +26,21 @@ class LoginController
                 $_SESSION['login'] = $user;
             }
 
-
             return $user;
         }
 
         return null;
     }
+
+    static function getConnectedUser()
+    {
+
+        if (isset($_SESSION['login']) && isset($_SESSION['login']->id)) {
+            $id = md5($_SESSION['login']->id);
+            return Query::fetchOne("SELECT * FROM users WHERE MD5(id)='$id'");
+        }
+        return false;
+    }
+
+
 }

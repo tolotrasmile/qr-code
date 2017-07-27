@@ -26,6 +26,12 @@ class ApiController
 
     static function deleteDocument($id)
     {
-        Query::delete('documents', $id);
+        $user = LoginController::getConnectedUser();
+
+        if ($user && (int)$user->accreditation == 3) {
+            return Query::delete('documents', $id);
+        }
+
+        return false;
     }
 }

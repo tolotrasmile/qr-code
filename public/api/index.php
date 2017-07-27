@@ -6,6 +6,8 @@
  * Time: 20:30
  */
 
+use App\Controller\ApiController;
+
 if (session_status() != PHP_SESSION_ACTIVE) {
     session_start();
 }
@@ -22,22 +24,20 @@ if (isset($_POST['action'])) {
     switch ($_POST['action']) {
 
         case 'login': {
-            $result->data = \App\Controller\ApiController::login($_POST['username'], $_POST['password']);
+            $result->data = ApiController::login($_POST['username'], $_POST['password']);
         }
             break;
 
         case 'documents': {
-            $result->data = \App\Controller\ApiController::login($_POST['username'], $_POST['password']);
+            $result->data = ApiController::login($_POST['username'], $_POST['password']);
         }
             break;
 
-        case 'delete': {
-            $result->data = \App\Controller\ApiController::login($_POST['username'], $_POST['password']);
+        case 'deleteDocument': {
+            $result->data = ApiController::deleteDocument($_POST['id']);
         }
             break;
     }
 }
 
-//$result->data = \App\Controller\ApiController::login('test', 'test');
-
-echo json_encode($_POST);
+echo json_encode($result);

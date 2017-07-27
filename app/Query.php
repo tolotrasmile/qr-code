@@ -44,14 +44,14 @@ class Query
     /**
      * @param $tableName
      * @param $id
-     * @return array
-     * @internal param string $query
-     * @internal param int $mode
+     * @return bool
      */
     public static function delete($tableName, $id)
     {
-        $query = "DELETE FROM $tableName WHERE md5(id)='$id'";
-        return Database::getInstance()->getPdo()->query($query)->fetchAll();
+        $sql = "DELETE FROM $tableName WHERE md5(id) = :id";
+
+        $query = Database::getInstance()->getPdo()->prepare($sql);
+        return $query->execute([":id" => $id]);
     }
 
 }
