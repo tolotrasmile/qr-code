@@ -24,14 +24,25 @@ class ApiController
         return LoginController::__doLogin($username, $password);
     }
 
+    /**
+     * @param $id
+     * @return bool
+     */
     static function deleteDocument($id)
     {
-        $user = LoginController::getConnectedUser();
-
-        if ($user && (int)$user->accreditation == 3) {
+        if (LoginController::userCanDelete()) {
             return Query::delete('documents', $id);
         }
 
         return false;
     }
+
+    static function updateDocuments($name, $id)
+    {
+        if (LoginController::userCanDelete()) {
+            return Query::update('documents', 'name', $name, $id);
+        }
+        return false;
+    }
+
 }

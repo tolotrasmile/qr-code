@@ -43,4 +43,10 @@ class LoginController
     }
 
 
+    static function userCanDelete()
+    {
+        return (self::getConnectedUser() && self::getConnectedUser()->accreditation == 3);
+    }
+
+
 }

@@ -150,7 +150,8 @@ if (isset($_GET['id'])) {
                 <div class="modal-body">
                     <form id="form-modal" class="form-group">
                         <label for="recipient-name" class="form-control-label">NOM:</label>
-                        <input type="text" class="form-control" name="name" value="<?php echo $currentDocument->name ?>">
+                        <input type="text" class="form-control" name="name"
+                               value="<?php echo $currentDocument->name ?>">
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -164,43 +165,55 @@ if (isset($_GET['id'])) {
 
 <script>
 
-  $('#deleteDocument').click(function (e) {
+  const API_URL = 'public/api/index.php';
+
+  $('#deleteDocument').click((e) => {
 
     e.preventDefault();
 
     if (confirm("Voulez-vous supprimer le document?")) {
 
-      var id = getParameterByName('id');
+      const id = getParameterByName('id');
 
-      $.post("public/api/index.php", {action: 'deleteDocument', id: id})
-        .done(function (data) {
+      $.post(API_URL, {action: 'deleteDocument', id: id})
+        .done((data) => {
           location.reload();
         })
-        .fail(function () {
+        .fail(() => {
           alert("Erreur lors de la suppression");
         })
     }
   });
 
-  $('#save-document').click(function (e) {
+  $('#save-document').click((e) => {
+
     e.preventDefault();
 
-    console.log($('#form-modal').serialize());
+    const id = getParameterByName('id');
     $('#documentDetailModal').modal('hide');
 
-    window.setTimeout(function () {
-      location.reload();
-    }, 1000);
+    const formData = $('#form-modal').serializeArray()[0];
+    const params = Object.assign(formData, {action: 'updateDocuments', id: id});
+
+    $.post(API_URL, params)
+      .done((data) => {
+        //console.log(data);
+        location.reload();
+      })
+      .fail((error) => {
+        console.log(error);
+        alert("Erreur lors de la suppression");
+      });
 
   });
 
   function getParameterByName(name) {
 
-    var url = window.location.href;
+    const url = window.location.href;
 
     name = name.replace(/[\[\]]/g, "\\$&");
 
-    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"), results = regex.exec(url);
+    const regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"), results = regex.exec(url);
 
     if (!results) return null;
     if (!results[2]) return '';

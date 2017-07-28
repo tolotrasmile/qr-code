@@ -54,4 +54,12 @@ class Query
         return $query->execute([":id" => $id]);
     }
 
+    public static function update($tableName, $column, $field, $id)
+    {
+        $sql = "UPDATE $tableName SET $column='$field' WHERE md5(id) = :id";
+
+        $query = Database::getInstance()->getPdo()->prepare($sql);
+        return $query->execute([":id" => $id]);
+    }
+
 }

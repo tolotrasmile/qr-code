@@ -24,17 +24,23 @@ if (isset($_POST['action'])) {
     switch ($_POST['action']) {
 
         case 'login': {
-            $result->data = ApiController::login($_POST['username'], $_POST['password']);
+            if (isset($_POST['username']) && isset($_POST['username'])) {
+                $result->data = ApiController::login($_POST['username'], $_POST['password']);
+            }
         }
             break;
 
-        case 'documents': {
-            $result->data = ApiController::login($_POST['username'], $_POST['password']);
+        case 'updateDocuments': {
+            if (isset($_POST['id']) && isset($_POST['value'])) {
+                $result->data = ApiController::updateDocuments($_POST['value'], $_POST['id']);
+            }
         }
             break;
 
         case 'deleteDocument': {
-            $result->data = ApiController::deleteDocument($_POST['id']);
+            if (isset($_POST['id'])) {
+                $result->data = ApiController::deleteDocument($_POST['id']);
+            }
         }
             break;
     }
